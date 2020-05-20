@@ -6,7 +6,12 @@
     <div>
       <mat-form-field class="example-full-width" floatLabel="always">
         <mat-label>New Service name</mat-label>
-        <input matInput id="newServiceName" [(ngModel)]="newServiceName" >
+        <input
+          id="newServiceName"
+          matInput
+          [(ngModel)]="newServiceName"
+          autocomplete="off"
+        >
       </mat-form-field>
       <button
         matTooltip="Add a new service"
