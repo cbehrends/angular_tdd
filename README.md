@@ -2,6 +2,21 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.4.
 
+# Docker Support
+This example uses Nginx to serve up the front end.  
+
+To build the container
+
+`docker build -t <my_container_name> .`
+
+To run the container in your local Docker instance
+
+`docker run -p 8080:80 <my_container_name>`
+
+This will setup the container to listen on port 8080, you may adjust as needed.
+
+Once the container is running, navigate to `http://localhost:8080`
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
