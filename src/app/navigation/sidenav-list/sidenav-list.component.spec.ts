@@ -34,32 +34,32 @@ describe('SidenavListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain a Home button', () => {
+  it('should contain a Home nav link', () => {
     const compiled = fixture.nativeElement;
-    const button = compiled.querySelector('#home');
-    expect(button.textContent).toContain('Home');
+    const navLink = compiled.querySelector('#home');
+    expect(navLink.textContent).toContain('Home');
   });
 
-  it('home button should route to home page', async () => {
+  it('home nav link should route to home page', async () => {
     const compiled = fixture.nativeElement;
-    const button = compiled.querySelector('#home');
+    const navLink = compiled.querySelector('#home');
     await router.navigateByUrl('/claims'); // Set to something other than the default route
     expect(router.url).toBe('/claims');
-    await button.click();
+    await navLink.click();
     expect(router.url).toBe('/');
   });
 
-  it('should contain a Claims button', () => {
+  it('should contain a Claims nav link', () => {
     const compiled = fixture.nativeElement;
-    const button = compiled.querySelector('#claims');
-    expect(button.textContent).toContain('Claims');
+    const navLink = compiled.querySelector('#claims');
+    expect(navLink.textContent).toContain('Claims');
   });
 
-  it('home button should route to claims page', async () => {
+  it('claims nav link should route to claims page', async () => {
     const compiled = fixture.nativeElement;
-    const button = compiled.querySelector('#claims');
+    const navLink = compiled.querySelector('#claims');
     await router.navigateByUrl('/dummy'); // Set to something other than the claims route
-    await button.click();
+    await navLink.click();
     expect(router.url).toBe('/claims');
   });
 
