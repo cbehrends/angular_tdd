@@ -13,6 +13,9 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
 import { ClaimsComponent } from './claims/claims.component';
 import { ServiceTypesComponent } from './service-types/service-types.component';
 import {FormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import {FormsModule} from "@angular/forms";
     MaterialModule,
     FlexLayoutModule,
     RoutingModule,
-    FormsModule
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

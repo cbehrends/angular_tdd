@@ -2,17 +2,28 @@
   <div fxFlexAlign="center">
     <h2>Services!</h2>
   </div>
-  <div>
-    <label label="FOOO">
-      <input [(ngModel)]="newServiceName" >
-    </label>
-    <button (click)="addService(newServiceName)">
-      Add Service
-    </button>
-  </div>
-  <div>
-    <div *ngFor="let service of services">
-      {{service.description}}
+  <div class="service-list-container">
+    <div>
+      <mat-form-field class="example-full-width" floatLabel="always">
+        <mat-label>New Service name</mat-label>
+        <input matInput id="newServiceName" [(ngModel)]="newServiceName" >
+      </mat-form-field>
+      <button
+        matTooltip="Add a new service"
+        mat-stroked-button
+        (click)="addService(newServiceName)"
+        [disabled]="newServiceName.length === 0"
+      >
+        Add Service
+      </button>
+    </div>
+    <h3>
+      Services Offered ({{services.length}})
+    </h3>
+    <div>
+      <div *ngFor="let service of services">
+        {{service.description}}
+      </div>
     </div>
   </div>
 </section>

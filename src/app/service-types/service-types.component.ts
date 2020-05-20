@@ -9,7 +9,8 @@ import {ServiceType} from './ServiceType';
 })
 export class ServiceTypesComponent implements OnInit {
   services: ServiceType[];
-  @Input() newServiceName: string;
+
+  @Input() newServiceName =  '';
   constructor(public servicesService: ServicesService) { }
 
   ngOnInit(): void {
