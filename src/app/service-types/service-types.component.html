@@ -1,0 +1,18 @@
+<section fxLayout="column" fxFlexAlign="stretch">
+  <div fxFlexAlign="center">
+    <h2>Services!</h2>
+  </div>
+  <div>
+    <label label="FOOO">
+      <input [(ngModel)]="newServiceName" >
+    </label>
+    <button (click)="addService(newServiceName)">
+      Add Service
+    </button>
+  </div>
+  <div>
+    <div *ngFor="let service of services">
+      {{service.description}}
+    </div>
+  </div>
+</section>

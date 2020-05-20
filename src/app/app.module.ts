@@ -11,7 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { ClaimsComponent } from './claims/claims.component';
-import { ServicesComponent } from './service-types/services.component';
+import { ServiceTypesComponent } from './service-types/service-types.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -21,14 +22,15 @@ import { ServicesComponent } from './service-types/services.component';
     HeaderComponent,
     SidenavListComponent,
     ClaimsComponent,
-    ServicesComponent
+    ServiceTypesComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
-    RoutingModule
+    RoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

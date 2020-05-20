@@ -10,8 +10,12 @@ RUN npm install
 RUN npm run build --prod
 
 # deployment image
-FROM nginx:1.17.1-alpine
+FROM nginx:alpine
+
+#Remove default Nginx page
 RUN rm -rf /usr/share/nginx/html/*
+
+# Copy the contents of the dist folder to
 COPY --from=builder /app/dist/AngularUI /usr/share/nginx/html
 
 EXPOSE 80
