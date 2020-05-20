@@ -1,15 +1,12 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
 
-.navigation-items {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.navigation-item {
+a {
+  /*width: 100%;*/
   margin-bottom: 10px;
+}
+
+.link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }

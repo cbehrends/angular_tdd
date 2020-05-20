@@ -1,24 +1,30 @@
-<div
-  class="container"
+<a
+  id="home"
+  mat-list-item
+  [routerLink]="'/'"
 >
-  <mat-sidenav-container
-    id="side-nav"
-  >
-    <mat-nav-list
-      class="navigation-items"
-    >
-      <mat-list-item
-        id="home"
-        [routerLink]="'/'"
-      >
-        Home
-      </mat-list-item>
-      <mat-list-item
-        id="claims"
-        [routerLink]="'/claims'"
-      >
-        Claims
-      </mat-list-item>
-    </mat-nav-list>
-  </mat-sidenav-container>
-</div>
+  <div class="link-container">
+    <mat-icon class="material-icons-outlined">home</mat-icon>
+    <span>Home</span>
+  </div>
+</a>
+<a
+  id="claims"
+  mat-list-item
+  [routerLink]="'/claims'"
+>
+  <div class="link-container">
+    <mat-icon class="material-icons-outlined">folder_shared</mat-icon>
+    <span>Claims</span>
+  </div>
+</a>
+<a
+  id="services"
+  mat-list-item
+  [routerLink]="'/services'"
+>
+  <div class="link-container">
+    <mat-icon class="material-icons-outlined">description</mat-icon>
+    <span>Services</span>
+  </div>
+</a>
