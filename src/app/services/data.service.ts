@@ -48,11 +48,6 @@ export class DataService {
   delete(url: string, params?: any): Observable<Response> {
     const options = { };
 
-    console.log('data.service deleting');
-
-    // this.http.delete(url, options)
-    //   .subscribe((res) => {console.log('deleted');
-    //   });
     return this.http.delete(url, options)
       .pipe(
         tap((res: Response) => {
