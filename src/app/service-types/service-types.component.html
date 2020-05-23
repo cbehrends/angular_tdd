@@ -3,6 +3,9 @@
     <h2>Services!</h2>
   </div>
   <div class="service-list-container">
+    <h3>
+      Services Offered ({{services.length}})
+    </h3>
     <div>
       <mat-form-field class="example-full-width" floatLabel="always">
         <mat-label>New Service name</mat-label>
@@ -22,13 +25,19 @@
         Add Service
       </button>
     </div>
-    <h3>
-      Services Offered ({{services.length}})
-    </h3>
-    <div>
-      <div *ngFor="let service of services">
-        {{service.description}}
-      </div>
-    </div>
+    <mat-list>
+      <mat-list-item *ngFor="let service of services">
+        <div class="list-item-container">
+          <div>
+            {{service.description}}
+          </div>
+          <div class="tool-box">
+            <button mat-icon-button matTooltip="Delete" (click)="confirmDialog(service.id)">
+              <mat-icon class="material-icons-outlined delete-button">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
   </div>
 </section>

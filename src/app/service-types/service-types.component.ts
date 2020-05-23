@@ -1,6 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { ServicesService } from './services.service';
-import {ServiceType} from './ServiceType';
+import {Component, OnInit} from '@angular/core';
+import {IServiceType} from './service-type';
+import {ServicesTypesService} from './services-types.service';
+import {catchError} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent, ConfirmDialogModel} from '../confirm-dialog/confirm-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-service-types',
@@ -8,18 +14,69 @@ import {ServiceType} from './ServiceType';
   styleUrls: ['./service-types.component.css']
 })
 export class ServiceTypesComponent implements OnInit {
-  services: ServiceType[];
-
-  @Input() newServiceName =  '';
-  constructor(public servicesService: ServicesService) { }
+  newServiceName: string;
+  services: IServiceType[];
+  errorReceived: boolean;
+  dialogResult: boolean;
+  constructor(private servicesTypesService: ServicesTypesService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.services = this.servicesService.getServices();
-  }
-
-  addService(description: string){
-    this.servicesService.addService(new ServiceType(description));
     this.newServiceName = '';
+    this.getServices();
   }
 
+  addService(serviceDescription: string){
+    this.errorReceived = false;
+    this.servicesTypesService.addService(serviceDescription)
+      .pipe(catchError((err) => this.handleError(err)))
+      .subscribe(newService => {
+        this.services.push(newService);
+        this.newServiceName = '';
+      });
+  }
+
+  getServices() {
+    this.errorReceived = false;
+    this.servicesTypesService.getServices()
+      .pipe(catchError((err) => this.handleError(err)))
+      .subscribe(services => {
+        this.services = services;
+      });
+  }
+
+  confirmDialog(id: number): void {
+    const message = 'Are you sure you want to delete this record';
+
+    const dialogData = new ConfirmDialogModel('Confirm Delete', message);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '400px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.dialogResult = dialogResult;
+      if (dialogResult){
+        // this.servicesTypesService.deleteService(id);
+        this.servicesTypesService.deleteService(id)
+          .pipe(catchError((err) => this.handleError(err)))
+          .subscribe(() => {
+            this.services.splice(this.services.indexOf(this.services.find(s => s.id === id)), 1);
+          });
+      }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 5000, // Auto confirm if open more than 5 seconds
+      verticalPosition: 'top'
+    });
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    this.errorReceived = true;
+    this.openSnackBar(error.error, 'Confirm');
+    return throwError(error);
+  }
 }

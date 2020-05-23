@@ -5,17 +5,16 @@ import { RoutingModule } from './routing/routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-
+import { HttpClientModule } from '@angular/common/http';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { ClaimsComponent } from './claims/claims.component';
 import { ServiceTypesComponent } from './service-types/service-types.component';
-import {FormsModule} from "@angular/forms";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { ServicesModule } from './services/services.module';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +25,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     SidenavListComponent,
     ClaimsComponent,
     ServiceTypesComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,10 +33,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MaterialModule,
     FlexLayoutModule,
     RoutingModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule
+    ServicesModule.forRoot(),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

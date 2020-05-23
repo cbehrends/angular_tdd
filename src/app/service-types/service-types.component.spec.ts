@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ServicesService} from './services.service';
 import { ServiceTypesComponent } from './service-types.component';
-import {ServiceType} from './ServiceType';
+import {ServiceType} from './service-type';
 
 let servicesServiceSpy: ServicesService;
 

@@ -2,4 +2,14 @@
   <div fxFlexAlign="center">
     <h2>Claims Page!</h2>
   </div>
+  <div>
+    <div *ngFor="let claim of claims">
+      <div>
+        Patient Name: {{claim.firstName}}
+      </div>
+      <div *ngFor="let svc of claim.servicesRendered">
+        Service: {{svc.description}}
+      </div>
+    </div>
+  </div>
 </section>
