@@ -33,19 +33,18 @@ export class ServiceTypesComponent implements OnInit {
   addService(serviceDescription: string){
     this.errorReceived = false;
     this.servicesTypesService.addService(serviceDescription)
-      .pipe(
-        map(data => data),
-        catchError(this.handleError)
+      .subscribe(data => data,
+        error => this.handleError(error)
       );
   }
 
   getServices() {
     this.errorReceived = false;
     this.servicesTypesService.getServices()
-      .pipe(catchError(this.handleError))
-      .subscribe(services => {
-        this.services = services;
-      });
+      .subscribe(
+        services =>  this.services = services,
+          error => this.handleError(error)
+        );
   }
 
   confirmDialog(id: number): void {
@@ -62,13 +61,17 @@ export class ServiceTypesComponent implements OnInit {
       this.dialogResult = dialogResult;
       if (dialogResult){
 
-        this.servicesTypesService.deleteService(id)
-          .pipe(catchError((err) => this.handleError(err)))
-          .subscribe(() => {
-            this.services.splice(this.services.indexOf(this.services.find(s => s.id === id)), 1);
-          });
+        this.deleteService(id);
       }
     });
+  }
+
+  private deleteService(id: number) {
+    this.servicesTypesService.deleteService(id)
+      .subscribe(
+        () => this.services.splice(this.services.indexOf(this.services.find(s => s.id === id)), 1),
+        error => this.handleError(error)
+      );
   }
 
   openSnackBar(message: string, action: string) {
