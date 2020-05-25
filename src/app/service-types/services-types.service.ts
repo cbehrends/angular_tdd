@@ -1,45 +1,47 @@
-import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {Inject, Injectable} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
 import {IServiceType} from './service-type';
-import {DataService} from '../services/data.service';
-import {tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ServicesTypesService {
   private serviceTypeUrl = 'http://localhost:5000';
-  constructor(private dataService: DataService) { }
-
-  getService(id: number): Observable<IServiceType>{
-    const url = this.serviceTypeUrl + '/services/' + id;
-
-    return this.dataService.get(url).pipe<IServiceType>(tap((response: any) => {
-      return response;
-    }));
-  }
+  constructor(private http: HttpClient) { }
 
   getServices(): Observable<IServiceType[]> {
     const url = this.serviceTypeUrl + '/services';
 
-    return this.dataService.get(url).pipe<IServiceType[]>(tap((response: any) => {
-      return response;
-    }));
+    return this.http
+      .get<IServiceType[]>(url)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  addService(description: string): Observable<IServiceType>{
+  addService(description: string): any{
     const url = this.serviceTypeUrl + '/services';
-
-    return this.dataService.post(url, {description}).pipe<IServiceType>(tap((response: any) => {
-      return response;
-    }));
+    return this.http.post(url, {description})
+      .pipe(
+        map(data => data),
+        catchError(this.handleError)
+      );
   }
 
-  deleteService(id: number): Observable<Response>{
+  deleteService(id: number): any{
     const url = this.serviceTypeUrl + '/services/' + id;
-    // this.dataService.delete(url);
-    return this.dataService.delete(url).pipe(tap((response: any) => {
-      return response;
-    }));
+    return this.http.delete(url)
+      .pipe(
+        map(data => data),
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(res: HttpErrorResponse) {
+    console.error(res.error);
+    return throwError(new Error(res.error));
   }
 }

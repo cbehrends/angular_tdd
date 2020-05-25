@@ -8,7 +8,12 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should render layout component', () => {
+    page.navigateTo();
+    expect(page.getLayout()).toBeTruthy();
+  });
+
+  it('should display title message AngularUI', () => {
     page.navigateTo();
     expect(page.getTitleText()).toEqual('AngularUI');
   });

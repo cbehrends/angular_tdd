@@ -1,25 +1,42 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ServicesService} from './services.service';
 import { ServiceTypesComponent } from './service-types.component';
-import {ServiceType} from './service-type';
+import {ServicesTypesService} from './services-types.service';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {Observable, of} from 'rxjs';
 
-let servicesServiceSpy: ServicesService;
+import {IServiceType} from './service-type';
+
+const errorResp = new Error('BOOM');
 
 describe('ServiceTypesComponent', () => {
   let component: ServiceTypesComponent;
   let fixture: ComponentFixture<ServiceTypesComponent>;
 
+  const testVal = new Observable<IServiceType>();
+  let getServicesSpy: any;
+
   beforeEach(async(() => {
-    const getServicesSpy = jasmine.createSpyObj('ServicesService', ['getServices', 'addService']);
-    getServicesSpy.getServices.and.returnValue([new ServiceType('FOO')]);
+    const spy = jasmine.createSpyObj('ServicesTypesService', ['getServices', 'addService']);
+
+    spy.getServices.and.returnValue(testVal);
+    spy.addService.and.returnValue(testVal);
 
     TestBed.configureTestingModule({
-      providers: [{ provide: ServicesService, useValue: getServicesSpy }],
+      providers: [
+        { provide: ServicesTypesService, useValue: spy },
+        MatDialog,
+        ServiceTypesComponent,
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        ],
+      imports: [MatDialogModule, MatSnackBarModule],
       declarations: [ ServiceTypesComponent ]
     })
     .compileComponents();
 
-    servicesServiceSpy = TestBed.inject(ServicesService);
+    getServicesSpy = TestBed.inject(ServicesTypesService);
+    component = TestBed.inject(ServiceTypesComponent);
+
   }));
 
   beforeEach(() => {
@@ -32,13 +49,25 @@ describe('ServiceTypesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call ServicesService.getServices on init', async () => {
+  it('should call ServicesTypesService.getServices on init', async () => {
     await component.ngOnInit();
-    expect(component.servicesService.getServices).toHaveBeenCalled();
+
+    expect(getServicesSpy.getServices).toHaveBeenCalled();
   });
 
-  it('should call ServicesService.addService on add new service', async () => {
+  it('should call ServicesTypesService.addService on add new service', async () => {
     component.addService('FOOOO');
-    expect(component.servicesService.addService).toHaveBeenCalledWith(new ServiceType('FOOOO'));
+    expect(getServicesSpy.addService).toHaveBeenCalled();
+  });
+
+  it('should call ServicesTypesService.addService on add new service and deal with errors', () => {
+
+    getServicesSpy.addService.and.throwError(errorResp);
+
+    expect(() => {
+        component.addService('FOOO');
+      }
+    ).toThrowError();
+
   });
 });

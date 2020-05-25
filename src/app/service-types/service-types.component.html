@@ -1,13 +1,10 @@
 <section fxLayout="column" fxFlexAlign="stretch">
-  <div fxFlexAlign="center">
-    <h2>Services!</h2>
-  </div>
   <div class="service-list-container">
     <h3>
-      Services Offered ({{services.length}})
+      Services Offered
     </h3>
     <div>
-      <mat-form-field class="example-full-width" floatLabel="always">
+      <mat-form-field floatLabel="always">
         <mat-label>New Service name</mat-label>
         <input
           id="newServiceName"
@@ -17,6 +14,7 @@
         >
       </mat-form-field>
       <button
+        id='addNewService'
         matTooltip="Add a new service"
         mat-stroked-button
         (click)="addService(newServiceName)"
@@ -26,7 +24,7 @@
       </button>
     </div>
     <mat-list>
-      <mat-list-item *ngFor="let service of services">
+      <mat-list-item id='serviceList' *ngFor="let service of services">
         <div class="list-item-container">
           <div>
             {{service.description}}

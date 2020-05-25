@@ -1,25 +1,69 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ClaimsComponent } from './claims.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {ClaimsService} from './claims.service';
+import {Observable, of, throwError} from 'rxjs';
+import {IClaim} from './IClaim';
+
+let claimServiceSpy: any;
+
+const testData = [{id: 1, firstName: 'Foo'} as IClaim, {id: 2, firstName: 'Bar'} as IClaim];
+
+const testVal = of(testData[0]);
+const test = of(testData);
 
 describe('ClaimsComponent', () => {
-  let component: ClaimsComponent;
+  let claimsComponent: ClaimsComponent;
   let fixture: ComponentFixture<ClaimsComponent>;
 
   beforeEach(async(() => {
+
+    claimServiceSpy = jasmine.createSpyObj('ClaimsService', ['getClaims', 'saveClaim', 'handleError']);
+    claimServiceSpy.getClaims.and.returnValue(test);
+    claimServiceSpy.saveClaim.and.returnValue(testVal);
+
     TestBed.configureTestingModule({
-      declarations: [ ClaimsComponent ]
+      declarations: [ ClaimsComponent ],
+      providers: [
+        { provide: ClaimsService, useValue: claimServiceSpy },
+        MatDialog
+      ],
+      imports: [OverlayModule, MatDialogModule, MatSnackBarModule]
     })
     .compileComponents();
+
+    // claimsService = TestBed.inject(ClaimsService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ClaimsComponent);
-    component = fixture.componentInstance;
+    claimsComponent = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create new Claims component instance', () => {
-    expect(component).toBeTruthy();
+  it('should create new Claims component instance and call getClaims on ngInit', () => {
+    expect(claimsComponent).toBeTruthy();
+    expect(claimServiceSpy.getClaims).toHaveBeenCalled();
   });
+
+  it('should getClaims', () => {
+    claimsComponent.getClaims();
+    expect(claimServiceSpy.getClaims).toHaveBeenCalled();
+  });
+
+  it('should handle error in getClaims', () => {
+    claimServiceSpy.getClaims.and.throwError('BOOM');
+    expect( () => {
+      claimsComponent.getClaims();
+    }).toThrowError('BOOM');
+
+  });
+
+  it('should save claim', () => {
+    claimsComponent.saveClaim({id: 1, firstName: 'Foo'} as IClaim);
+    expect(claimServiceSpy.saveClaim).toHaveBeenCalled();
+  });
+
 });

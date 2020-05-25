@@ -1,29 +1,30 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IClaim} from './IClaim';
-import {DataService} from '../services/data.service';
 import {tap} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ClaimsService {
   private claimsUrl = 'http://localhost:5000';
-  constructor(private dataService: DataService) { }
+  constructor(private http: HttpClient) { }
 
-  getClaim(id: number): Observable<IClaim>{
+  getClaim(id: number): any{
     const url = this.claimsUrl + '/claims/' + id;
-
-    return this.dataService.get(url).pipe<IClaim>(tap((response: any) => {
-      return response;
-    }));
+    return this.http.get(url);
   }
 
-  getClaims(): Observable<IClaim[]> {
+  getClaims(): Observable<any> {
     const url = this.claimsUrl + '/claims';
 
-    return this.dataService.get(url).pipe<IClaim[]>(tap((response: any) => {
-      return response;
-    }));
+    return this.http.get(url);
+  }
+
+  saveClaim(claim: IClaim): Observable<any>{
+    const url = this.claimsUrl + '/claims';
+    return this.http.put(url, claim);
   }
 }

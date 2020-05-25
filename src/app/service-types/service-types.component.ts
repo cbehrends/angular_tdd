@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {IServiceType} from './service-type';
 import {ServicesTypesService} from './services-types.service';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent, ConfirmDialogModel} from '../confirm-dialog/confirm-dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {HttpErrorResponse} from "@angular/common/http";
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-service-types',
@@ -18,9 +18,14 @@ export class ServiceTypesComponent implements OnInit {
   services: IServiceType[];
   errorReceived: boolean;
   dialogResult: boolean;
-  constructor(private servicesTypesService: ServicesTypesService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+
+  constructor(public servicesTypesService: ServicesTypesService,
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar,
+              private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Services');
     this.newServiceName = '';
     this.getServices();
   }
@@ -28,17 +33,16 @@ export class ServiceTypesComponent implements OnInit {
   addService(serviceDescription: string){
     this.errorReceived = false;
     this.servicesTypesService.addService(serviceDescription)
-      .pipe(catchError((err) => this.handleError(err)))
-      .subscribe(newService => {
-        this.services.push(newService);
-        this.newServiceName = '';
-      });
+      .pipe(
+        map(data => data),
+        catchError(this.handleError)
+      );
   }
 
   getServices() {
     this.errorReceived = false;
     this.servicesTypesService.getServices()
-      .pipe(catchError((err) => this.handleError(err)))
+      .pipe(catchError(this.handleError))
       .subscribe(services => {
         this.services = services;
       });
@@ -57,7 +61,7 @@ export class ServiceTypesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.dialogResult = dialogResult;
       if (dialogResult){
-        // this.servicesTypesService.deleteService(id);
+
         this.servicesTypesService.deleteService(id)
           .pipe(catchError((err) => this.handleError(err)))
           .subscribe(() => {
@@ -74,9 +78,9 @@ export class ServiceTypesComponent implements OnInit {
     });
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: Error) {
     this.errorReceived = true;
-    this.openSnackBar(error.error, 'Confirm');
+    this.openSnackBar(error.message, 'Confirm');
     return throwError(error);
   }
 }

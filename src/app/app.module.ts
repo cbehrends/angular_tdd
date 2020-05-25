@@ -12,8 +12,9 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { ClaimsComponent } from './claims/claims.component';
 import { ServiceTypesComponent } from './service-types/service-types.component';
-import { ServicesModule } from './services/services.module';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ClaimEditorComponent } from './claims/claim-editor/claim-editor.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     ClaimsComponent,
     ServiceTypesComponent,
     ConfirmDialogComponent,
+    ClaimEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,8 +35,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MaterialModule,
     FlexLayoutModule,
     RoutingModule,
-    ServicesModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

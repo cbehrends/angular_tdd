@@ -2,14 +2,23 @@
   <div fxFlexAlign="center">
     <h2>Claims Page!</h2>
   </div>
-  <div>
-    <div *ngFor="let claim of claims">
-      <div>
-        Patient Name: {{claim.firstName}}
-      </div>
-      <div *ngFor="let svc of claim.servicesRendered">
-        Service: {{svc.description}}
-      </div>
-    </div>
+  <div fxFlexAlign="center">
+    <mat-list>
+      <mat-list-item *ngFor="let claim of claims">
+        <div class="list-item-container">
+          <div>
+            {{claim.firstName}}
+          </div>
+          <div class="tool-box">
+            <button mat-icon-button matTooltip="Edit details" (click)="editDialog(claim)">
+              <mat-icon class="material-icons-outlined edit-button">edit</mat-icon>
+            </button>
+            <button class="delete-button" mat-icon-button matTooltip="Delete claim">
+              <mat-icon class="material-icons-outlined edit-button">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
   </div>
 </section>

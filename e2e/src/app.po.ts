@@ -1,4 +1,4 @@
-import { browser } from 'protractor';
+import {browser, by, element} from 'protractor';
 
 export class AppPage {
   navigateTo(): Promise<unknown> {
@@ -7,5 +7,9 @@ export class AppPage {
 
   getTitleText(): Promise<string> {
     return browser.getTitle() as Promise<string>;
+  }
+
+  getLayout(){
+    return element(by.id('layout'));
   }
 }
