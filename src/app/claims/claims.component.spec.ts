@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClaimsComponent } from './claims.component';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {OverlayModule} from '@angular/cdk/overlay';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ClaimsService} from './claims.service';
-import {Observable, of, throwError} from 'rxjs';
+import {of} from 'rxjs';
 import {IClaim} from './IClaim';
 
 let claimServiceSpy: any;
@@ -61,7 +61,12 @@ describe('ClaimsComponent', () => {
 
   });
 
-  it('should save claim', () => {
+  it('should call saveClaim on claim service', () => {
+    claimsComponent.saveClaim({id: 1, firstName: 'Foo'} as IClaim);
+    expect(claimServiceSpy.saveClaim).toHaveBeenCalled();
+  });
+
+  it('should call createClaim on claim service', () => {
     claimsComponent.saveClaim({id: 1, firstName: 'Foo'} as IClaim);
     expect(claimServiceSpy.saveClaim).toHaveBeenCalled();
   });

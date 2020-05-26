@@ -1,7 +1,7 @@
-import {Renderedservice} from './renderedservice';
+import {IRenderedService} from './IRenderedService';
 
 export interface IClaim {
   id: number;
   firstName: string;
-  servicesRendered: Renderedservice[];
+  servicesRendered: IRenderedService[];
 }

@@ -1,16 +1,24 @@
 <section fxLayout="column" fxFlexAlign="stretch">
   <div fxFlexAlign="center">
-    <h2>Claims Page!</h2>
+    <h2>Claims</h2>
   </div>
-  <div fxFlexAlign="center">
+  <div class="form">
+    <div class="add-button-container" >
+      <button class="add-button" mat-button  matTooltip="New Claim" (click)="newClaim()">
+        <mat-icon class="material-icons-outlined edit-button">add</mat-icon>
+        <span>
+          New Claim
+        </span>
+       </button>
+    </div>
     <mat-list>
       <mat-list-item *ngFor="let claim of claims">
         <div class="list-item-container">
           <div>
-            {{claim.firstName}}
+            {{claim.firstName}} ({{claim.servicesRenderedCount}} Services Rendered)
           </div>
           <div class="tool-box">
-            <button mat-icon-button matTooltip="Edit details" (click)="editDialog(claim)">
+            <button mat-icon-button matTooltip="Edit details" (click)="editDialog(claim.id)">
               <mat-icon class="material-icons-outlined edit-button">edit</mat-icon>
             </button>
             <button class="delete-button" mat-icon-button matTooltip="Delete claim">

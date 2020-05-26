@@ -2,6 +2,7 @@ import {inject, TestBed} from '@angular/core/testing';
 import { ClaimsService } from './claims.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {IClaim} from './IClaim';
+import {IClaimReadDto} from "./IClaimReadDto";
 
 describe('ClaimsService', () => {
   let service: ClaimsService;
@@ -9,6 +10,11 @@ describe('ClaimsService', () => {
   const fakeClaims = [
     { firstName: 'Corey' } as IClaim,
     { firstName: 'Hank' } as IClaim
+  ];
+
+  const fakeReadOnlyClaims = [
+    { firstName: 'Corey' } as IClaimReadDto,
+    { firstName: 'Hank' } as IClaimReadDto
   ];
 
   beforeEach(() => {
@@ -30,23 +36,10 @@ describe('ClaimsService', () => {
 
     service.getClaims().subscribe(claims => {
       expect(claims.length).toBe(2);
-      expect(claims).toEqual(fakeClaims);
+      expect(claims).toEqual(fakeReadOnlyClaims);
     });
 
     service.getClaims();
-    const req = httpMock.expectOne('http://localhost:5000/claims');
-    expect(req.request.method).toEqual('GET');
-
-    req.flush(fakeClaims);
-  });
-
-  it('should fetch claims', () => {
-
-    service.getClaims().subscribe(claims => {
-      expect(claims.length).toBe(2);
-      expect(claims).toEqual(fakeClaims);
-    });
-
     const req = httpMock.expectOne('http://localhost:5000/claims');
     expect(req.request.method).toEqual('GET');
 
@@ -71,5 +64,15 @@ describe('ClaimsService', () => {
 
     const req = httpMock.expectOne('http://localhost:5000/claims');
     expect(req.request.method).toEqual('PUT');
+  });
+
+  it('should create new claim ', () => {
+
+    service.createClaim({id: 1, firstName: 'FOO'} as IClaim).subscribe(claim => {
+      console.log(claim);
+    });
+
+    const req = httpMock.expectOne('http://localhost:5000/claims');
+    expect(req.request.method).toEqual('POST');
   });
 });

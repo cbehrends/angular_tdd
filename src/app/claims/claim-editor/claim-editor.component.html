@@ -2,7 +2,7 @@
   {{title}} {{claim.firstName}}
 </h1>
 
-<div mat-dialog-content>
+<div  mat-dialog-content>
   <form [formGroup]="editForm">
     <mat-form-field floatLabel="always">
       <mat-label>First Name</mat-label>
@@ -12,8 +12,42 @@
         autocomplete="off"
       >
     </mat-form-field>
-
+    <div class="service-content">
+      <div>
+        <div>
+          Services Rendered
+        </div>
+        <mat-list>
+          <mat-list-item id='renderedServices' *ngFor="let service of claim.servicesRendered">
+            <button mat-icon-button matTooltip="Remove Rendered Service" (click)="removeRenderedService(service.id)">
+              <mat-icon class="material-icons-outlined">add</mat-icon>
+            </button>
+            {{service.description}}
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div>
+        <h5>
+          Available Services
+        </h5>
+        <mat-list>
+          <mat-list-item id='serviceList' *ngFor="let service of serviceList">
+            <div class="list-item-container">
+              <div>
+                {{service.description}}
+              </div>
+              <div class="tool-box">
+                <button mat-icon-button matTooltip="Add to rendered services" (click)="addRenderedService(service)">
+                  <mat-icon class="material-icons-outlined">add</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
   </form>
+
 </div>
 
 <div mat-dialog-actions>

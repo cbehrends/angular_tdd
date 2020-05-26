@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {IClaim} from './IClaim';
 import {tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {IClaimReadDto} from "./IClaimReadDto";
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,15 @@ export class ClaimsService {
     return this.http.get(url);
   }
 
-  getClaims(): Observable<any> {
+  getClaims(): Observable<IClaimReadDto[]> {
     const url = this.claimsUrl + '/claims';
 
-    return this.http.get(url);
+    return this.http.get<IClaimReadDto[]>(url);
+  }
+
+  createClaim(claim: IClaim){
+    const url = this.claimsUrl + '/claims';
+    return this.http.post(url, claim);
   }
 
   saveClaim(claim: IClaim): Observable<any>{

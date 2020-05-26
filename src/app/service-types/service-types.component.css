@@ -6,11 +6,6 @@
 }
 .tool-box {
   display: none;
-  /*border-radius: 25px;*/
-  /*opacity: 0;*/
-  /*background: lightblue;*/
-  /*padding: 0;*/
-  /*margin: 0;*/
 }
 .list-item-container{
   display: flex;
