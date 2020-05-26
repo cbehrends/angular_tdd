@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IServiceType} from './service-type';
 import {ServicesTypesService} from './services-types.service';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent, ConfirmDialogModel} from '../confirm-dialog/confirm-dialog.component';
@@ -32,8 +32,10 @@ export class ServiceTypesComponent implements OnInit {
 
   addService(serviceDescription: string){
     this.errorReceived = false;
+
     this.servicesTypesService.addService(serviceDescription)
-      .subscribe(data => data,
+      .subscribe(
+        data => this.services.push({id: data.id, description: data.description}),
         error => this.handleError(error)
       );
   }
@@ -66,7 +68,7 @@ export class ServiceTypesComponent implements OnInit {
     });
   }
 
-  private deleteService(id: number) {
+  public deleteService(id: number) {
     this.servicesTypesService.deleteService(id)
       .subscribe(
         () => this.services.splice(this.services.indexOf(this.services.find(s => s.id === id)), 1),

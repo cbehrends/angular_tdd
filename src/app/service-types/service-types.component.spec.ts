@@ -3,9 +3,11 @@ import { ServiceTypesComponent } from './service-types.component';
 import {ServicesTypesService} from './services-types.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {Observable, of} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 
 import {IServiceType} from './service-type';
+import {HttpResponse} from '@angular/common/http';
+import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
 
 const errorResp = new Error('BOOM');
 
@@ -14,13 +16,15 @@ describe('ServiceTypesComponent', () => {
   let fixture: ComponentFixture<ServiceTypesComponent>;
 
   const testVal = new Observable<IServiceType>();
+  const testSuccessResponse  = new Observable<HttpResponse<any>>();
   let getServicesSpy: any;
 
   beforeEach(async(() => {
-    const spy = jasmine.createSpyObj('ServicesTypesService', ['getServices', 'addService']);
+    const spy = jasmine.createSpyObj('ServicesTypesService', ['getServices', 'addService', 'deleteService']);
 
     spy.getServices.and.returnValue(testVal);
     spy.addService.and.returnValue(testVal);
+    spy.deleteService.and.returnValue(testSuccessResponse);
 
     TestBed.configureTestingModule({
       providers: [
@@ -29,7 +33,7 @@ describe('ServiceTypesComponent', () => {
         ServiceTypesComponent,
         {provide: MAT_DIALOG_DATA, useValue: {}},
         ],
-      imports: [MatDialogModule, MatSnackBarModule],
+      imports: [MatDialogModule, MatSnackBarModule, BrowserAnimationsModule],
       declarations: [ ServiceTypesComponent ]
     })
     .compileComponents();
@@ -56,18 +60,44 @@ describe('ServiceTypesComponent', () => {
   });
 
   it('should call ServicesTypesService.addService on add new service', async () => {
+    const newService = {id: 1, description: 'FOO'} as IServiceType;
+    component.services = new Array(newService);
+    getServicesSpy.addService.and.returnValue(of(newService));
     component.addService('FOOOO');
+
     expect(getServicesSpy.addService).toHaveBeenCalled();
   });
 
-  it('should call ServicesTypesService.addService on add new service and deal with errors', () => {
+  it('should call ServicesTypesService.addService on add new service and deal with errors', async () => {
+    const newService = {id: 1, description: 'FOO'} as IServiceType;
+    component.services = new Array(newService);
 
     getServicesSpy.addService.and.throwError(errorResp);
 
     expect(() => {
-        component.addService('FOOO');
+        component.addService('foo');
       }
     ).toThrowError();
 
+    expect(getServicesSpy.addService).toHaveBeenCalled();
+
   });
+
+  it('should call ServicesTypesService.deleteService', async () => {
+    component.services = new Array({id: 1, description: 'FOOO'} as IServiceType);
+    component.deleteService(1);
+    // expect(component.deleteService(1)).toBeTruthy();
+    expect(getServicesSpy.deleteService).toHaveBeenCalled();
+  });
+
+  it('should call ServicesTypesService.deleteService on service delete and deal with errors', () => {
+
+    getServicesSpy.deleteService.and.throwError(errorResp);
+
+    expect(() => {
+        component.deleteService(1);
+      }
+    ).toThrowError(errorResp.message);
+  });
+
 });
