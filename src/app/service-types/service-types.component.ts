@@ -32,10 +32,15 @@ export class ServiceTypesComponent implements OnInit {
 
   addService(serviceDescription: string){
     this.errorReceived = false;
-
+    if(this.services === undefined){
+      this.services = new Array(0);
+    }
     this.servicesTypesService.addService(serviceDescription)
       .subscribe(
-        data => this.services.push({id: data.id, description: data.description}),
+        data => {
+          this.services.push({id: data.id, description: data.description});
+          this.newServiceName = '';
+        },
         error => this.handleError(error)
       );
   }

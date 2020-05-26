@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 import { ServiceTypesComponent } from './service-types.component';
 import {ServicesTypesService} from './services-types.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
@@ -68,9 +68,9 @@ describe('ServiceTypesComponent', () => {
     expect(getServicesSpy.addService).toHaveBeenCalled();
   });
 
-  it('should call ServicesTypesService.addService on add new service and deal with errors', async () => {
-    const newService = {id: 1, description: 'FOO'} as IServiceType;
-    component.services = new Array(newService);
+  it('should call ServicesTypesService.addService on add new service and deal with errors',  () => {
+    // const newService = {id: 1, description: 'FOO'} as IServiceType;
+    // component.services = new Array(newService);
 
     getServicesSpy.addService.and.throwError(errorResp);
 

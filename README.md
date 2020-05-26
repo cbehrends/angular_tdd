@@ -1,21 +1,9 @@
 # AngularUI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.4.
+This project goes along with my other test app [DotNetCore Clean Architecture](https://github.com/cbehrends/DotNetCoreCleanArchitectureSample.git).
 
-# Docker Support
-This example uses Nginx to serve up the front end.  
-
-To build the container
-
-`docker build -t <my_container_name> .`
-
-To run the container in your local Docker instance
-
-`docker run -p 8080:80 <my_container_name>`
-
-This will setup the container to listen on port 8080, you may adjust as needed.
-
-Once the container is running, navigate to `http://localhost:8080`
+Download that repo and follow the instructions to get the docker containers up and running, then run this app locally 
+as shown below
 
 ## Development server
 
