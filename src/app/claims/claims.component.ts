@@ -9,8 +9,8 @@ import {catchError} from 'rxjs/operators';
 import {Title} from '@angular/platform-browser';
 import {ServicesTypesService} from '../service-types/services-types.service';
 import {IServiceType} from '../service-types/service-type';
-import {IClaimReadDto} from "./IClaimReadDto";
-import {IRenderedService} from "./IRenderedService";
+import {IClaimReadDto} from './IClaimReadDto';
+
 @Component({
   selector: 'app-claims',
   templateUrl: './claims.component.html',

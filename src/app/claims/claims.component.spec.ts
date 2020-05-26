@@ -35,6 +35,7 @@ describe('ClaimsComponent', () => {
     .compileComponents();
 
     // claimsService = TestBed.inject(ClaimsService);
+    claimsComponent = TestBed.inject(ClaimsComponent);
   }));
 
   beforeEach(() => {
