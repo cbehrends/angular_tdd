@@ -13,11 +13,20 @@
           autocomplete="off"
         >
       </mat-form-field>
+      <mat-form-field floatLabel="always">
+        <mat-label>Service Cost</mat-label>
+        <input
+          id="newServiceCost"
+          matInput
+          [(ngModel)]="newServiceCost"
+          autocomplete="off"
+        >
+      </mat-form-field>
       <button
         id='addNewService'
         matTooltip="Add a new service"
         mat-stroked-button
-        (click)="addService(newServiceName)"
+        (click)="addService()"
         [disabled]="newServiceName.length === 0"
       >
         Add Service
@@ -26,8 +35,9 @@
     <mat-list>
       <mat-list-item id='serviceList' *ngFor="let service of services">
         <div class="list-item-container">
-          <div>
-            {{service.description}}
+          <div class="list-item-container">
+            <span>{{service.description}}</span>
+            <span>Cost: ${{ service.cost | number:'.2' }}</span>
           </div>
           <div class="tool-box">
             <button mat-icon-button matTooltip="Delete" (click)="confirmDialog(service.id)">

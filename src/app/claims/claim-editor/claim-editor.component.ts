@@ -2,8 +2,8 @@ import {Component, Inject, OnInit, Output} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {IClaim} from '../IClaim';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {IServiceType} from "../../service-types/service-type";
-import {IRenderedService} from "../IRenderedService";
+import {IServiceType} from '../../service-types/service-type';
+import {IRenderedService} from '../IRenderedService';
 
 @Component({
   selector: 'app-claim-editor',
@@ -24,7 +24,9 @@ export class ClaimEditorComponent implements OnInit {
     this.claim = data.claim;
     this.serviceList = data.serviceList;
     this.editForm = this.fb.group({
-      firstName: ''
+      firstName: '',
+      amountDue: 0.00,
+      totalAmount: 0.00
     });
   }
 
@@ -35,13 +37,23 @@ export class ClaimEditorComponent implements OnInit {
     this.claim.servicesRendered.push({
       id: -1,
       serviceId: service.id,
+      cost: service.cost,
       description: service.description} as IRenderedService);
+    this.reCalculateCost();
+  }
+
+  private reCalculateCost() {
+    let newSum = 0.00;
+    this.claim.servicesRendered.forEach(a => newSum = newSum + a.cost);
+
+    this.claim.totalAmount = newSum;
   }
 
   removeRenderedService(id: number): void {
     this.claim.servicesRendered.splice(
       this.claim.servicesRendered.indexOf(this.claim.servicesRendered.find(s => s.id === id)), 1);
 
+    this.reCalculateCost();
   }
 
   onDismiss(): void {
@@ -51,6 +63,8 @@ export class ClaimEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.editForm.controls.firstName.setValue(this.claim.firstName);
+    this.editForm.controls.amountDue.setValue(this.claim.amountDue);
+    this.editForm.controls.totalAmount.setValue(this.claim.totalAmount);
 
   }
 

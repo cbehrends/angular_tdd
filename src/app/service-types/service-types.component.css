@@ -17,6 +17,11 @@
 .delete-button{
   color: red;
 }
+
+mat-form-field {
+  margin: 10px;
+}
+
 button {
   margin: 10px;
 }

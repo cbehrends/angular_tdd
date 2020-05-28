@@ -22,9 +22,9 @@ export class ServicesTypesService {
       );
   }
 
-  addService(description: string): any{
+  addService(description: string, cost: number): any{
     const url = this.serviceTypeUrl + '/services';
-    return this.http.post(url, {description})
+    return this.http.post(url, {description, cost})
       .pipe(
         map(data => data),
         catchError(this.handleError)

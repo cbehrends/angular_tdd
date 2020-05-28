@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClaimEditorComponent } from './claim-editor.component';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder} from '@angular/forms';
-import {IClaim} from "../IClaim";
+import {IClaim} from '../IClaim';
 
 describe('ClaimEditorComponent', () => {
   let component: ClaimEditorComponent;

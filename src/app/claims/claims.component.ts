@@ -56,7 +56,7 @@ export class ClaimsComponent implements OnInit {
 
   newClaim(){
     this.addingNew = true;
-    this.newDialog({firstName: ''} as IClaim);
+    this.newDialog({firstName: '', totalAmount: 0, amountDue: 0} as IClaim);
   }
 
   saveClaim(claim: IClaim){
@@ -96,6 +96,7 @@ export class ClaimsComponent implements OnInit {
             this.claims.push( {
               id: updatedClaim.id,
               firstName: updatedClaim.firstName,
+              amountDue: updatedClaim.amountDue,
               servicesRenderedCount: updatedClaim.servicesRendered.length
             } as IClaimReadDto);
           });
@@ -124,6 +125,7 @@ export class ClaimsComponent implements OnInit {
                   this.claims[(this.claims.indexOf(this.claims.find(s => s.id === updatedClaim.id)))] =  {
                     id: updatedClaim.id,
                     firstName: updatedClaim.firstName,
+                    amountDue: updatedClaim.amountDue,
                     servicesRenderedCount: updatedClaim.servicesRendered.length
                   } as IClaimReadDto;
                 });

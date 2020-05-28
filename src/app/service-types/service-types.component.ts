@@ -15,6 +15,7 @@ import {Title} from '@angular/platform-browser';
 })
 export class ServiceTypesComponent implements OnInit {
   newServiceName: string;
+  newServiceCost: number;
   services: IServiceType[];
   errorReceived: boolean;
   dialogResult: boolean;
@@ -27,18 +28,19 @@ export class ServiceTypesComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('Services');
     this.newServiceName = '';
+    this.newServiceCost = 0.00;
     this.getServices();
   }
 
-  addService(serviceDescription: string){
+  addService(){
     this.errorReceived = false;
     if(this.services === undefined){
       this.services = new Array(0);
     }
-    this.servicesTypesService.addService(serviceDescription)
+    this.servicesTypesService.addService(this.newServiceName, this.newServiceCost)
       .subscribe(
         data => {
-          this.services.push({id: data.id, description: data.description});
+          this.services.push({id: data.id, description: data.description, cost: data.cost});
           this.newServiceName = '';
         },
         error => this.handleError(error)
