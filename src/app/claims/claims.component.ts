@@ -112,7 +112,7 @@ export class ClaimsComponent implements OnInit {
           editClaim = claim;
           const dialogData = new ClaimEditDialogModel('Edit Claim', editClaim, this.servicesList);
           const dialogRef = this.dialog.open(ClaimEditorComponent, {
-            maxWidth: '400px',
+            maxWidth: '500px',
             data: dialogData
           });
 

@@ -4,6 +4,7 @@ import {IClaim} from '../IClaim';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {IServiceType} from '../../service-types/service-type';
 import {IRenderedService} from '../IRenderedService';
+import {ClaimsService} from "../claims.service";
 
 @Component({
   selector: 'app-claim-editor',
@@ -18,6 +19,7 @@ export class ClaimEditorComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ClaimEditorComponent>,
               private fb: FormBuilder,
+              private claimService: ClaimsService,
               @Inject(MAT_DIALOG_DATA) public data: ClaimEditDialogModel) {
 
     this.title = data.title;
@@ -44,9 +46,13 @@ export class ClaimEditorComponent implements OnInit {
 
   private reCalculateCost() {
     let newSum = 0.00;
+    const originalValue = this.claim.totalAmount;
     this.claim.servicesRendered.forEach(a => newSum = newSum + a.cost);
 
     this.claim.totalAmount = newSum;
+    if (originalValue < this.claim.totalAmount){
+      this.claim.amountDue += this.claim.totalAmount - originalValue;
+    }
   }
 
   removeRenderedService(id: number): void {
@@ -71,6 +77,11 @@ export class ClaimEditorComponent implements OnInit {
   saveForm() {
     this.claim = {...this.claim, firstName: this.editForm.value.firstName};
     this.dialogRef.close(this.claim);
+  }
+
+  approvePayment() {
+    this.claimService.approvePayment(this.claim.id);
+    this.dialogRef.close(false);
   }
 }
 

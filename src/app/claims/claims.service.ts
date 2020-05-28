@@ -33,4 +33,10 @@ export class ClaimsService {
     const url = this.claimsUrl + '/claims';
     return this.http.put(url, claim);
   }
+
+  approvePayment(claimId: number){
+    const url = this.claimsUrl + '/claims/approve_payment/' + claimId;
+    return this.http.post(url, null)
+      .subscribe((r) => r);
+  }
 }

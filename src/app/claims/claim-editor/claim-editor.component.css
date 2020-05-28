@@ -2,7 +2,13 @@
   justify-content: flex-end;
 }
 
+.approve_payment_button {
+  color: green;
+}
 
+.mat-dialog-content{
+  margin-top: 20px;
+}
 
 .service-content {
   display: flex;
