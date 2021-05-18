@@ -63,7 +63,7 @@ describe('ServiceTypesComponent', () => {
     const newService = {id: 1, description: 'FOO'} as IServiceType;
     component.services = new Array(newService);
     getServicesSpy.addService.and.returnValue(of(newService));
-    component.addService('FOOOO');
+    component.addService();
 
     expect(getServicesSpy.addService).toHaveBeenCalled();
   });
@@ -75,7 +75,7 @@ describe('ServiceTypesComponent', () => {
     getServicesSpy.addService.and.throwError(errorResp);
 
     expect(() => {
-        component.addService('foo');
+        component.addService();
       }
     ).toThrowError();
 

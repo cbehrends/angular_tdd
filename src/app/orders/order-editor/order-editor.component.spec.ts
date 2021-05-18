@@ -1,20 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ClaimEditorComponent } from './claim-editor.component';
+import { OrderEditorComponent } from './order-editor.component';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder} from '@angular/forms';
-import {IClaim} from '../IClaim';
+import {IOrder} from '../IOrder';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('ClaimEditorComponent', () => {
-  let component: ClaimEditorComponent;
-  let fixture: ComponentFixture<ClaimEditorComponent>;
+describe('OrderEditorComponent', () => {
+  let component: OrderEditorComponent;
+  let fixture: ComponentFixture<OrderEditorComponent>;
   const formBuilder: FormBuilder = new FormBuilder();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClaimEditorComponent ],
+      declarations: [ OrderEditorComponent ],
+      imports: [HttpClientTestingModule],
       providers: [MatDialogModule,
         {provide: MatDialogRef, useValue: {}},
-        { provide: FormBuilder, useValue: formBuilder },
+        FormBuilder,
+        // { provide: FormBuilder, useValue: formBuilder },
         {provide: MAT_DIALOG_DATA, useValue: {}},
       ]
     })
@@ -22,12 +25,12 @@ describe('ClaimEditorComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClaimEditorComponent);
+    fixture = TestBed.createComponent(OrderEditorComponent);
     component = fixture.componentInstance;
     component.editForm = formBuilder.group({
       firstName: ''
     });
-    component.claim = {firstName: 'foo'} as IClaim;
+    component.order = {firstName: 'foo'} as IOrder;
     fixture.detectChanges();
   });
 

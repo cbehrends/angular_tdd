@@ -34,7 +34,7 @@ export class ServiceTypesComponent implements OnInit {
 
   addService(){
     this.errorReceived = false;
-    if(this.services === undefined){
+    if (this.services === undefined){
       this.services = new Array(0);
     }
     this.servicesTypesService.addService(this.newServiceName, this.newServiceCost)

@@ -1,16 +1,16 @@
 <h1 mat-dialog-title>
-  {{title}} {{claim.firstName}}
+  {{title}} {{order.firstName}}
 </h1>
 <div class="service-content">
   <div class="service-content">
-    <span>Amount Due: ${{ claim.amountDue | number:'.2' }}</span>
-    <span>Total Amount: ${{ claim.totalAmount | number:'.2' }}</span>
+    <span>Amount Due: ${{ order.amountDue | number:'.2' }}</span>
+    <span>Total Amount: ${{ order.totalAmount | number:'.2' }}</span>
   </div>
   <button
     class="approve_payment_button"
     mat-icon-button
     matTooltip="Approve Payment"
-    [disabled]="claim.amountDue <= 0"
+    [disabled]="order.amountDue <= 0"
     (click)="approvePayment()">
     <mat-icon>attach_money</mat-icon>
   </button>
@@ -31,7 +31,7 @@
           Services Rendered
         </div>
         <mat-list>
-          <mat-list-item id='renderedServices' *ngFor="let service of claim.servicesRendered">
+          <mat-list-item id='renderedServices' *ngFor="let service of order.servicesRendered">
             <button mat-icon-button matTooltip="Remove Rendered Service" (click)="removeRenderedService(service.id)">
               <mat-icon class="material-icons-outlined">add</mat-icon>
             </button>

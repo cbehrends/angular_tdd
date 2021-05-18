@@ -35,9 +35,9 @@ describe('ServicesTypesService', () => {
 
   it('should fetch services', () => {
 
-    service.getServices().subscribe(claims => {
-      expect(claims.length).toBe(2);
-      expect(claims).toEqual(fakeServices);
+    service.getServices().subscribe(orders => {
+      expect(orders.length).toBe(2);
+      expect(orders).toEqual(fakeServices);
     });
 
     service.getServices();
@@ -66,10 +66,11 @@ describe('ServicesTypesService', () => {
   it('should add service', () => {
     const dummyService = {
       id: 1,
-      description: 'foo'
+      description: 'foo',
+      cost: 100
     } as IServiceType;
 
-    service.addService('FOO').subscribe(retVal => {
+    service.addService('FOO', 100).subscribe(retVal => {
       expect(retVal).toBe(dummyService);
     });
 
@@ -81,7 +82,7 @@ describe('ServicesTypesService', () => {
 
   it('should handle errors when adding new service', () => {
 
-    service.addService('FOO').subscribe(
+    service.addService('FOO', 100).subscribe(
       data => fail(errorResp),
       (error: Error) => {
         expect(error.message).toBeTruthy();

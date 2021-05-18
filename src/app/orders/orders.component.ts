@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import {ClaimsService} from './claims.service';
-import {IClaim} from './IClaim';
+import {OrdersService} from './orders.service';
+import {IOrder} from './IOrder';
 import {throwError} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
-import {ClaimEditDialogModel, ClaimEditorComponent} from './claim-editor/claim-editor.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {catchError} from 'rxjs/operators';
 import {Title} from '@angular/platform-browser';
 import {ServicesTypesService} from '../service-types/services-types.service';
 import {IServiceType} from '../service-types/service-type';
-import {IClaimReadDto} from './IClaimReadDto';
+import {IOrderReadDto} from './IOrderReadDto';
+import {OrderEditDialogModel, OrderEditorComponent} from './order-editor/order-editor.component';
 
 @Component({
-  selector: 'app-claims',
-  templateUrl: './claims.component.html',
-  styleUrls: ['./claims.component.css']
+  selector: 'app-orders',
+  templateUrl: './orders.component.html',
+  styleUrls: ['./orders.component.css']
 })
-export class ClaimsComponent implements OnInit {
-  claims: IClaimReadDto[];
+export class OrdersComponent implements OnInit {
+  orders: IOrderReadDto[];
   servicesList: IServiceType[];
   errorReceived: boolean;
   addingNew: boolean;
-  constructor(private claimsService: ClaimsService,
+  constructor(private ordersService: OrdersService,
               private servicesTypesService: ServicesTypesService,
               private dialog: MatDialog,
               private titleService: Title,
@@ -30,18 +30,18 @@ export class ClaimsComponent implements OnInit {
   ngOnInit(): void {
     this.addingNew = false;
     this.errorReceived = false;
-    this.titleService.setTitle('Claims');
-    this.getClaims();
+    this.titleService.setTitle('Orders');
+    this.getOrders();
     this.getServices();
 
   }
 
-  getClaims() {
+  getOrders() {
     this.errorReceived = false;
-    this.claimsService.getClaims()
+    this.ordersService.getOrders()
       .pipe(catchError(this.handleError))
-      .subscribe(claims => {
-        this.claims = claims;
+      .subscribe(orders => {
+        this.orders = orders;
       });
   }
 
@@ -54,35 +54,35 @@ export class ClaimsComponent implements OnInit {
       });
   }
 
-  newClaim(){
+  newOrder(){
     this.addingNew = true;
-    this.newDialog({firstName: '', totalAmount: 0, amountDue: 0} as IClaim);
+    this.newDialog({firstName: '', totalAmount: 0, amountDue: 0} as IOrder);
   }
 
-  saveClaim(claim: IClaim){
+  saveOrder(order: IOrder){
     if (this.addingNew === true){
       return;
     }
 
-    this.claimsService.saveClaim(claim)
+    this.ordersService.saveOrder(order)
       .pipe(
         catchError(this.handleError),
         )
-      .subscribe((updatedClaim: IClaim) => {
-        this.claims.push( {
-          id: updatedClaim.id,
-          firstName: updatedClaim.firstName,
-          servicesRenderedCount: updatedClaim.servicesRendered.length
-        } as IClaimReadDto);
+      .subscribe((updatedOrder: IOrder) => {
+        this.orders.push( {
+          id: updatedOrder.id,
+          firstName: updatedOrder.firstName,
+          servicesRenderedCount: updatedOrder.servicesRendered.length
+        } as IOrderReadDto);
         this.addingNew = false;
         this.errorReceived = false;
       });
   }
 
-  newDialog(claim: IClaim){
+  newDialog(order: IOrder){
 
-    const dialogData = new ClaimEditDialogModel('New Claim', claim, this.servicesList);
-    const dialogRef = this.dialog.open(ClaimEditorComponent, {
+    const dialogData = new OrderEditDialogModel('New Order', order, this.servicesList);
+    const dialogRef = this.dialog.open(OrderEditorComponent, {
       maxWidth: '400px',
       data: dialogData
     });
@@ -90,28 +90,28 @@ export class ClaimsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
 
       if (dialogResult){
-        this.claimsService.createClaim(dialogResult)
+        this.ordersService.createOrder(dialogResult)
           .pipe(catchError((err) => this.handleError(err)))
-          .subscribe((updatedClaim: IClaim) => {
-            this.claims.push( {
-              id: updatedClaim.id,
-              firstName: updatedClaim.firstName,
-              amountDue: updatedClaim.amountDue,
-              servicesRenderedCount: updatedClaim.servicesRendered.length
-            } as IClaimReadDto);
+          .subscribe((updatedOrder: IOrder) => {
+            this.orders.push( {
+              id: updatedOrder.id,
+              firstName: updatedOrder.firstName,
+              amountDue: updatedOrder.amountDue,
+              servicesRenderedCount: updatedOrder.servicesRendered.length
+            } as IOrderReadDto);
           });
       }
     });
   }
 
-  editDialog(claimId: number): void {
-    let editClaim: IClaim;
-    this.claimsService.getClaim(claimId)
+  editDialog(orderId: number): void {
+    let editOrder: IOrder;
+    this.ordersService.getOrder(orderId)
       .subscribe(
-        claim => {
-          editClaim = claim;
-          const dialogData = new ClaimEditDialogModel('Edit Claim', editClaim, this.servicesList);
-          const dialogRef = this.dialog.open(ClaimEditorComponent, {
+        order => {
+          editOrder = order;
+          const dialogData = new OrderEditDialogModel('Edit Order', editOrder, this.servicesList);
+          const dialogRef = this.dialog.open(OrderEditorComponent, {
             maxWidth: '500px',
             data: dialogData
           });
@@ -119,15 +119,15 @@ export class ClaimsComponent implements OnInit {
           dialogRef.afterClosed().subscribe(dialogResult => {
 
             if (dialogResult){
-              this.claimsService.saveClaim(dialogResult)
+              this.ordersService.saveOrder(dialogResult)
                 .pipe(catchError((err) => this.handleError(err)))
-                .subscribe((updatedClaim: IClaim) => {
-                  this.claims[(this.claims.indexOf(this.claims.find(s => s.id === updatedClaim.id)))] =  {
-                    id: updatedClaim.id,
-                    firstName: updatedClaim.firstName,
-                    amountDue: updatedClaim.amountDue,
-                    servicesRenderedCount: updatedClaim.servicesRendered.length
-                  } as IClaimReadDto;
+                .subscribe((updatedOrder: IOrder) => {
+                  this.orders[(this.orders.indexOf(this.orders.find(s => s.id === updatedOrder.id)))] =  {
+                    id: updatedOrder.id,
+                    firstName: updatedOrder.firstName,
+                    amountDue: updatedOrder.amountDue,
+                    servicesRenderedCount: updatedOrder.servicesRendered.length
+                  } as IOrderReadDto;
                 });
             }
           });

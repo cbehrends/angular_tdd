@@ -1,6 +1,6 @@
 import {IRenderedService} from './IRenderedService';
 
-export interface IClaim {
+export interface IOrder {
   id: number;
   firstName: string;
   totalAmount: number;

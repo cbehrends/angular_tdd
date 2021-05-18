@@ -12,7 +12,7 @@ describe('SidenavListComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
-          {path: 'claims', component: SidenavListComponent},
+          {path: 'orders', component: SidenavListComponent},
           {path: '', component: SidenavListComponent},
           {path: 'services', component: SidenavListComponent},
           {path: 'dummy', component: SidenavListComponent}
@@ -44,24 +44,24 @@ describe('SidenavListComponent', () => {
   it('home nav link should route to Home page', async () => {
     const compiled = fixture.nativeElement;
     const navLink = compiled.querySelector('#home');
-    await router.navigateByUrl('/claims'); // Set to something other than the default route
-    expect(router.url).toBe('/claims');
+    await router.navigateByUrl('/orders'); // Set to something other than the default route
+    expect(router.url).toBe('/orders');
     await navLink.click();
     expect(router.url).toBe('/');
   });
 
-  it('should contain a Claims nav link', () => {
+  it('should contain a Orders nav link', () => {
     const compiled = fixture.nativeElement;
-    const navLink = compiled.querySelector('#claims');
-    expect(navLink.textContent).toContain('Claims');
+    const navLink = compiled.querySelector('#orders');
+    expect(navLink.textContent).toContain('Orders');
   });
 
-  it('claims nav link should route to Claims page', async () => {
+  it('orders nav link should route to Orders page', async () => {
     const compiled = fixture.nativeElement;
-    const navLink = compiled.querySelector('#claims');
-    await router.navigateByUrl('/dummy'); // Set to something other than the claims route
+    const navLink = compiled.querySelector('#orders');
+    await router.navigateByUrl('/dummy'); // Set to something other than the orders route
     await navLink.click();
-    expect(router.url).toBe('/claims');
+    expect(router.url).toBe('/orders');
   });
 
   it('should contain a Services nav link', () => {
